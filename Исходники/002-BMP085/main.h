@@ -10,7 +10,10 @@
 #include "macros.h"
 #include "config.h"
 
+#include "mcu_i2c.h"
+
 #include "stm32f4xx.h"
 #include "stm32f4xx_rcc.h"
+#include "stm32f4xx_i2c.h"
 
 #endif /* MAIN_H_ */

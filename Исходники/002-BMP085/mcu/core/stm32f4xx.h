@@ -50,10 +50,10 @@
   * @{
   */
 
+#include "main.h"
+
 #ifndef __STM32F4xx_H
 #define __STM32F4xx_H
-
-#include "main.h"
 
 #ifdef __cplusplus
  extern "C" {

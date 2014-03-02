@@ -5,7 +5,9 @@
 OPTIMIZATION = s
 
 SRC_C  = main.c
+SRC_C += mcu_i2c.c
 SRC_C += stm32f4xx_rcc.c
+SRC_C += stm32f4xx_i2c.c
 
 SRC_ASM += startup_stm32f4xx.s
 
