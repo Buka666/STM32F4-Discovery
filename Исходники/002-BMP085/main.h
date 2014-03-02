@@ -10,6 +10,8 @@
 #include "macros.h"
 #include "config.h"
 
+#include "bmp085.h"
+
 #include "mcu_i2c.h"
 
 #include "stm32f4xx.h"
