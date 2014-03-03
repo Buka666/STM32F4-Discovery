@@ -13,4 +13,6 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_rcc.h"
 
+#include "lcd_nokia1100.h"
+
 #endif /* MAIN_H_ */

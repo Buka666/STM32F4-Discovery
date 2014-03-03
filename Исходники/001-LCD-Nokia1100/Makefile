@@ -5,6 +5,8 @@
 OPTIMIZATION = s
 
 SRC_C  = main.c
+SRC_C += macros.c
+SRC_C += lcd_nokia1100.c
 SRC_C += stm32f4xx_rcc.c
 
 SRC_ASM += startup_stm32f4xx.s

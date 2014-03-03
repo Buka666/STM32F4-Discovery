@@ -324,4 +324,6 @@ typedef unsigned char  uint8_t;
 #define PIN_SIGNAL(PIN_DESCRIPTION) GPIO_PIN_SIGNAL(PIN_DESCRIPTION)
 #define PIN_BITBAND(PIN_DESCRIPTION) GPIO_PIN_BITBAND(PIN_DESCRIPTION)
 
+void delay_ms(uint16_t value);
+
 #endif /* MACROS_H_ */
