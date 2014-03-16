@@ -136,3 +136,89 @@ uint8_t mcu_i2c_read_byte(uint8_t device_address)
 	return I2C1->DR;
 }
 
+void mcu_i2c_read(uint8_t device_address, uint8_t * buffer, uint8_t length)
+{
+	PIN_ON(PIN_LED);
+
+	// формируем сигнал СТАРТ
+	I2C1->CR1 |= I2C_CR1_START;
+
+	// ждем окончания передачи сигнала СТАРТ
+	while (!(I2C1->SR1 & I2C_SR1_SB))
+	{
+	}
+	(void) I2C1->SR1;
+
+	// передаем адрес ведомого устройства
+	I2C1->DR = (uint8_t) (device_address << 1) | 0x01;
+
+	// ждем окончания передачи адреса
+	while (!(I2C1->SR1 & I2C_SR1_ADDR))
+	{
+	}
+
+	if (length == 1)
+	{
+		I2C1->CR1 &= ~I2C_CR1_ACK;
+	}
+	(void) I2C1->SR1;
+	(void) I2C1->SR2;
+
+	while (length > 0)
+	{
+		switch (length--)
+		{
+			case (1):
+			{
+				// формируем сигнал СТОП
+				I2C1->CR1 |= I2C_CR1_STOP;
+
+				// ждем окончания приема данных
+				while (!(I2C1->SR1 & I2C_SR1_RXNE))
+				{
+				}
+
+				// считываем данные
+				*buffer = I2C1->DR;
+
+				break;
+			}
+			case (2):
+			{
+				while (!(I2C1->SR1 & I2C_SR1_BTF))
+				{
+				}
+
+				I2C1->CR1 &= ~I2C_CR1_ACK;
+
+				// считываем данные
+				*buffer++ = I2C1->DR;
+
+				// формируем сигнал СТОП
+				I2C1->CR1 |= I2C_CR1_STOP;
+
+				// ждем окончания приема данных
+				while (!(I2C1->SR1 & I2C_SR1_RXNE))
+				{
+				}
+
+				// считываем данные
+				*buffer++ = I2C1->DR;
+
+				length = 0;
+
+				break;
+			}
+			default:
+			{
+				// ждем окончания приема данных
+				while (!(I2C1->SR1 & I2C_SR1_RXNE))
+				{
+				}
+
+				// считываем данные
+				*buffer++ = I2C1->DR;
+			}
+		}
+	}
+}
