@@ -49,8 +49,6 @@ struct bmp085_type bmp085;
 
 void bmp085_init(void)
 {
-	uint8_t index;
-
 	// активируем датчик
 	PIN_OFF(PIN_BMP085_XCLR);
 
@@ -61,10 +59,11 @@ void bmp085_init(void)
 	mcu_i2c_write_byte(BMP085_SETTINGS_DEVICE_ADDRESS, 0xAA);
 
 	// считываем значение корректировочных ячеек
-	for (index = 0; index < ARRAY_LENGHT(bmp085.calibration_coefficients.raw); index++)
+	mcu_i2c_read(BMP085_SETTINGS_DEVICE_ADDRESS, (uint8_t *) bmp085.calibration_coefficients.raw, ARRAY_LENGHT(bmp085.calibration_coefficients.raw) << 1);
+
+	for (uint8_t index = 0; index < ARRAY_LENGHT(bmp085.calibration_coefficients.raw); index++)
 	{
-		bmp085.calibration_coefficients.raw[index] = ((uint16_t) mcu_i2c_read_byte(BMP085_SETTINGS_DEVICE_ADDRESS)) << 8;
-		bmp085.calibration_coefficients.raw[index] |= (uint16_t) mcu_i2c_read_byte(BMP085_SETTINGS_DEVICE_ADDRESS);
+		bmp085.calibration_coefficients.raw[index] = (bmp085.calibration_coefficients.raw[index] << 8) | (bmp085.calibration_coefficients.raw[index] >> 8);
 	}
 }
 
